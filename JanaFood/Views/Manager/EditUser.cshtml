@@ -1,0 +1,57 @@
+﻿@model EditUserViewModel
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h1>Update Details</h1>
+                <div asp-validation-summary="All"></div>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <label asp-for="UserId"></label>
+                    <input asp-for="UserId" class="form-control" readonly />
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <label asp-for="City"></label>
+                    <input asp-for="City" class="form-control" />
+
+                    <input type="submit" name="save" value="Save" class="btn btn-success" />
+                </form>
+            </div>
+            <div class="card-footer">
+                @if (Model.Roles.Any())
+                {
+                    <ul>
+                        @foreach (var role in Model.Roles)
+                        {
+                            <li>@role</li>
+                        }
+                    </ul>
+
+                }
+                else
+                {
+                    <p>This User has no role</p>
+                }
+                <a asp-action="EditUserInRole" asp-controller="Admin" asp-route-roleId="@Model.UserId" class="btn btn-danger">MANAGE ROLES</a>
+                @if (Model.Claims.Any())
+                {
+                    <ul>
+                        @foreach (var claim in Model.Claims)
+                        {
+                            <li>@claim</li>
+                        }
+                    </ul>
+
+                }
+                else
+                {
+                    <p>This User has no claims</p>
+                }
+                <a asp-action="EditUserInRole" asp-controller="Admin" asp-route-roleId="@Model.UserId" class="btn btn-danger">MANAGE CLAIMS</a>
+            </div>
+        </div>
+    </div>
+</div>

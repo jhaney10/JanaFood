@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Food
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Update Details</h1>
+                    <div asp-validation-summary="All"></div>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="UpdateDetails">
+                        <input type="hidden" asp-for="Id" />
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control"/>
+                        <label asp-for="Description"></label>
+                        <input asp-for="Description" class="form-control"/>
+                        <label asp-for="Price"></label>
+                        <input asp-for="Price" class="form-control"/><br />
+                        <input type="submit" name="save" value="Save" class="btn btn-success"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

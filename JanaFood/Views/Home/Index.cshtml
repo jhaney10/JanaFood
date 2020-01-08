@@ -1,0 +1,42 @@
+﻿@model HomeViewModel
+
+
+<h1>Swift Food Order</h1>
+<p>Available Meals</p>
+@foreach (var food in Model.Foods)
+{
+    <div class="card">
+        <div class="card-header">
+            @food.Id
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    @if (@food.Picture != null)
+                    {
+                        <img src="~/images/@food.Picture" width="100" height="100" />
+                    }
+                    else
+                    {
+                        <img src="~/images/no_image.png" width="100" height="100" />
+                    }
+                </div>
+                <div class="col-md-3">
+                    <p>@food.Name</p>
+                    <p>@food.Description</p>
+                    <p>@food.Price</p>
+                </div>
+                <div class="col-md-7">
+                    <a asp-action="Details" asp-route-id="@food.Id" class="btn btn-info">More Details</a>
+                    <a asp-action="Update" asp-route-id="@food.Id" class="btn btn-info">Edit</a>
+                    <form method="post" asp-action="DeleteFood" asp-route-id="@food.Id">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+

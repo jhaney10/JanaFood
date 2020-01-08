@@ -1,0 +1,39 @@
+﻿
+@model CreateFoodViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="row mt-5">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a New Food</h1>
+                <div asp-validation-summary="All"></div>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <label asp-for="Description"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <label asp-for="Price"></label>
+                    <input asp-for="Price" class="form-control" /><br />
+                    <label asp-for="Photo"></label>
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <label asp-for="Photo" class="custom-file-label">Upload Image...</label>
+                    </div>
+                    <br /><br />
+                    <input type="submit" name="save" value="Save" class="btn btn-info" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+
+<a asp-action="Index">Go Back Home</a>
+
+
+

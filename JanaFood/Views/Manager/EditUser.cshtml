@@ -35,7 +35,7 @@
                 {
                     <p>This User has no role</p>
                 }
-                <a asp-action="EditUserInRole" asp-controller="Admin" asp-route-roleId="@Model.UserId" class="btn btn-danger">MANAGE ROLES</a>
+                <a asp-action="ManageRolesInUser" asp-controller="Manager" asp-route-userId="@Model.UserId" class="btn btn-danger">MANAGE ROLES</a>
                 @if (Model.Claims.Any())
                 {
                     <ul>

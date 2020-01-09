@@ -4,6 +4,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+
     <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
@@ -19,6 +20,29 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-action="Index" asp-controller="Home">Home <span class="sr-only">(current)</span></a>
                     </li>
+
+                    @if (signInManager.IsSignedIn(User) && (User.IsInRole("Manager") || User.IsInRole("Admin")))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage Roles
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link" asp-action="CreateRole" asp-controller="Admin">Create Role</a>
+                                <a class="nav-link" asp-action="ListRoles" asp-controller="Admin">Manage Roles</a>
+                                <a class="nav-link" asp-action="ListUsers" asp-controller="Manager">Manage Users</a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage Food
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link" asp-action="Create" asp-controller="Home">Create a New Food</a>
+                            </div>
+                        </li>
+                    }
                     @if (signInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
@@ -37,27 +61,6 @@
                             <a class="nav-link" asp-action="Login" asp-controller="Account">Login</a>
                         </li>
                     }
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Manager"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Create">Create a New Food</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="CreateRole" asp-controller="Admin">Create Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="ListRoles" asp-controller="Admin">Manage Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="ListUsers" asp-controller="Manager">Manage Users</a>
-                        </li>
-                    }
-                    @if (signInManager.IsSignedIn(User) && (User.IsInRole("Admin") ))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" asp-action="Create">Create a New Food</a>
-                        </li>
-                    }
                 </ul>
             </div>
         </nav>
@@ -66,7 +69,7 @@
     <footer>
         @if (User.Identity.IsAuthenticated)
         {
-            foreach(var identity in User.Identities)
+            foreach (var identity in User.Identities)
             {
                 <h3>@identity.Name</h3>
             }
@@ -76,5 +79,11 @@
             <div>You are not authenticated</div>
         }
     </footer>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery/jquery.slim.js"></script>
+    <script src="~/lib/jquery/core.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
 </body>
 </html>
+
+

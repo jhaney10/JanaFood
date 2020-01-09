@@ -1,8 +1,16 @@
-﻿@model HomeViewModel
+﻿@inject SignInManager<AppUser> signInManager
+@model HomeViewModel
 
 
 <h1>Swift Food Order</h1>
 <p>Available Meals</p>
+@{
+    if (TempData["Message"] != null)
+    {
+        <p class="alert alert-success"> @TempData["Message"]</p>
+    }
+}
+
 @foreach (var food in Model.Foods)
 {
     <div class="card">
@@ -24,14 +32,17 @@
                 <div class="col-md-3">
                     <p>@food.Name</p>
                     <p>@food.Description</p>
-                    <p>@food.Price</p>
+                    <p><span>N</span>@food.Price</p>
                 </div>
                 <div class="col-md-7">
-                    <a asp-action="Details" asp-route-id="@food.Id" class="btn btn-info">More Details</a>
-                    <a asp-action="Update" asp-route-id="@food.Id" class="btn btn-info">Edit</a>
-                    <form method="post" asp-action="DeleteFood" asp-route-id="@food.Id">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                    <a asp-action="Details" asp-route-id="@food.Id" class="btn btn-info">Order</a>
+                    @if (signInManager.IsSignedIn(User) && (User.IsInRole("Manager") || User.IsInRole("Admin")))
+                    {
+                        <a asp-action="Update" asp-route-id="@food.Id" class="btn btn-info">Edit</a>
+                        <form method="post" asp-action="DeleteFood" asp-route-id="@food.Id">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    }
                 </div>
             </div>
         </div>

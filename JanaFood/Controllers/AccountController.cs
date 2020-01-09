@@ -98,6 +98,7 @@ namespace JanaFood.Controllers
                     }
                     else
                     {
+                        ViewBag.UserId = _userManager.GetUserId(User);
                         return RedirectToAction("Index", "Home");
                     }
                 }

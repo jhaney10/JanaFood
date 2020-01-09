@@ -50,7 +50,9 @@ namespace JanaFood
                                 .RequireAuthenticatedUser()
                                 .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            }).AddSessionStateTempDataProvider();
+            services.AddSession();
+           
             services.AddDbContext<ApplicationDbContext>( 
                 options => options.UseSqlServer(_configuration.GetConnectionString("JanaFood")));
 
@@ -86,6 +88,7 @@ namespace JanaFood
             app.UseRewriter(new RewriteOptions().AddRedirectToHttpsPermanent());
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();

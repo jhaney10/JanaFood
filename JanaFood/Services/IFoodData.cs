@@ -13,6 +13,7 @@ namespace JanaFood.Services
         Food GetFood(int id);
         Food UpdateFood(Food food);
         string DeleteFood(int id);
+        Order OrderFood(Order order);
 
     }
 }

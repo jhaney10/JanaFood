@@ -115,5 +115,71 @@ namespace JanaFood.Controllers
                 }
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> ManageRolesInUser(string userId)
+        {
+            ViewBag.UserId = userId;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User Id {userId} was not found";
+                return View("Not Found");
+            }
+            else
+            {
+                var userRoles = new List<ManageRolesViewModel>();
+                foreach (var role in _roleManager.Roles)
+                {
+                    var roleView = new ManageRolesViewModel
+                    {
+                        RoleId = role.Id,
+                        RoleName = role.Name,
+                    };
+
+                    if (await _userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        roleView.IsSelected = true;
+                    }
+                    userRoles.Add(roleView);
+                }
+
+                return View(userRoles);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageRolesInUser(List<ManageRolesViewModel> model, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User Id {userId} was not found";
+                return View("Not Found");
+            }
+            else
+            {
+                for (int i = 0; i < model.Count; i++)
+                {
+                    IdentityResult result = null;
+                    var checkRole = await _userManager.IsInRoleAsync(user, model[i].RoleName);
+                    if (checkRole && !model[i].IsSelected)
+                    {
+                        result = await _userManager.RemoveFromRoleAsync(user, model[i].RoleName);
+                    }
+                    else if(!checkRole && model[i].IsSelected)
+                    {
+                        await _userManager.AddToRoleAsync(user, model[i].RoleName);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                return View(model);
+            }
+
+        }
+
     }
 }

@@ -13,5 +13,6 @@ namespace JanaFood.Models
             :base(options){ }
 
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

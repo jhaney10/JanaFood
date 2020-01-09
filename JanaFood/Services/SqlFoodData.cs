@@ -44,6 +44,13 @@ namespace JanaFood.Services
             return foodDetails;
         }
 
+        public Order OrderFood(Order order)
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+            return order;
+        }
+
         public Food SaveFood(Food food)
         {
             _context.Foods.Add(food);

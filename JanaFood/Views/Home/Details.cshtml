@@ -1,6 +1,6 @@
-﻿@model Food
+﻿@model OrderFoodViewModel
 @{
-    var photo = Model.Picture??"no_image.png";
+    var photo = Model.CustomerOrder.Picture??"no_image.png";
 
 }
    
@@ -8,14 +8,24 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h1>More Details</h1>
+                <h1>Order Summary</h1>
             </div>
             <div class="card-body">
-                <img src="~/images/@photo" width="100" height="100"/>
-                <h3>@Model.Name</h3>
-                <p>@Model.Description</p>
-                <p>@Model.Price</p>
-                <a asp-action="Index" asp-controller="Home">Home</a>
+                <img src="~/images/@photo" width="100" height="100" />
+
+
+                <h3>@Model.CustomerOrder.Name</h3>
+                <p>@Model.CustomerOrder.Description</p>
+                <p><span>N</span>@Model.CustomerOrder.Price</p>
+                <p><b>Total Due:</b> N<span>@Model.CustomerOrder.Price</span></p>
+                <form method="post" asp-action="Order" asp-controller="Home">
+                    <input asp-for="CustomerOrder.Id" class="form-control" hidden />
+                    <input asp-for="Customer.Id" class="form-control" hidden />
+                    <label asp-for="DeliveryAddress"></label>
+                    <input asp-for="DeliveryAddress" class="form-control"/>
+                    <button class="btn btn-success">Order</button>
+                </form>
+                <a asp-action="Index" asp-controller="Home">Go Back Home</a>
             </div>
         </div>
     </div>

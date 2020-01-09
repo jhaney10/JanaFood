@@ -8,6 +8,7 @@ using JanaFood.Services;
 using JanaFood.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JanaFood.Controllers
@@ -17,15 +18,25 @@ namespace JanaFood.Controllers
     {
         private IFoodData _foodData;
         private IWebHostEnvironment _hostingEnvironment;
+        private UserManager<AppUser> _userManager;
+        private SignInManager<AppUser> _signInManager;
 
-        public HomeController(IFoodData foodData, IWebHostEnvironment hostingEnvironment)
+        public HomeController(IFoodData foodData, IWebHostEnvironment hostingEnvironment, 
+            UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _foodData = foodData;
             _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         [AllowAnonymous]
         public IActionResult Index()
         {
+            if (_signInManager.IsSignedIn(User))
+            {
+                ViewBag.UserId = _userManager.GetUserId(User);
+            }
+
             var viewModel = new HomeViewModel();
             viewModel.Foods = _foodData.GetAll();
 
@@ -80,16 +91,64 @@ namespace JanaFood.Controllers
             }
             
         }
-
-        [AllowAnonymous]
-        public IActionResult Details(int id)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
         {
-            var model = _foodData.GetFood(id);
-            if (model == null)
+            if (_signInManager.IsSignedIn(User))
             {
-                return RedirectToAction(nameof(Index));
+                //ViewBag.UserId = _userManager.GetUserId(User);
+                var userId = _userManager.GetUserId(User);
+                var user = await _userManager.FindByIdAsync(userId);
+                var food = _foodData.GetFood(id);
+                if (food == null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var orderFoodModel = new OrderFoodViewModel
+                {
+                    Customer = user,
+                    CustomerOrder = food,
+                };
+                return View(orderFoodModel);
             }
-            return View(model);
+            else
+            {
+                return RedirectToAction("Account", "Login");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Order(OrderFoodViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Customer.Id);
+            var food = _foodData.GetFood(model.CustomerOrder.Id);
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User Id {user} was not found";
+                return View("Not Found");
+            }
+            else if(food == null)
+            {
+                ViewBag.ErrorMessage = $"The Food Id {food} was not found";
+                return View("Not Found");
+            }
+            else
+            {
+                var newOrder = new Order
+                {
+                    Customer = user,
+                    CustomerOrder = food,
+                    OrderDate = DateTime.Now,
+                    DeliveryAddress = model.DeliveryAddress,
+                    OrderStatus = "Pending Delivery",
+                };
+                var orderFood = _foodData.OrderFood(newOrder);
+                TempData["Message"] = "Order Successful";
+                return RedirectToAction("Index","Home");
+            }
+
         }
 
         [HttpGet]

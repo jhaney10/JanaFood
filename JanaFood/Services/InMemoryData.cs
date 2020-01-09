@@ -35,6 +35,11 @@ namespace JanaFood.Models
             throw new NotImplementedException();
         }
 
+        public Order OrderFood(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
         public Food SaveFood(Food food)
         {
             throw new NotImplementedException();

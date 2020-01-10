@@ -1,0 +1,40 @@
+﻿@model ManageOrderViewModel
+@{ 
+    ViewBag.Title = "List of Orders";
+}
+<div class="card">
+    <div class="card-header">
+        ALL ORDERS
+        @if (TempData["Message"] != null)
+        {
+        <p class="alert alert-success"> @TempData["Message"]</p>
+        }
+    </div>
+    <div class="card-body">
+        @foreach (var order in Model.Orders)
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <span><b>ORDER ID:</b> @order.OrderId</span>
+                </div>
+                <div class="col-md-6">
+                    <span><b>ORDER DATE:</b> @order.OrderDate</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <p><b>CUSTOMER:</b> @order?.Customer?.UserName</p>
+                    <p><b>DELIVERY ADDRESS:</b> @order?.DeliveryAddress</p>
+                    <p><b>ORDER AMOUNT:</b> @order?.CustomerOrder?.Price</p>
+                    <p><b>ORDER:</b> @order?.CustomerOrder?.Name</p>
+                    <p><b>DETAILS:</b> @order?.CustomerOrder?.Description</p>
+                    <p><b>STATUS:</b>@order.OrderStatus</p>
+                    <a  asp-action="UpdateStatus" asp-controller="Manager" asp-route-id="@order.OrderId">Update Status</a>
+                   
+                </div>
+            </div>
+            <hr />
+        }
+        </div>
+</div>

@@ -30,7 +30,17 @@ namespace JanaFood.Models
             return _fooddata.OrderBy(x => x.Name);
         }
 
+        public IEnumerable<Order> GetAllOrders()
+        {
+            throw new NotImplementedException();
+        }
+
         public Food GetFood(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Order GetOrder(int id)
         {
             throw new NotImplementedException();
         }
@@ -46,6 +56,11 @@ namespace JanaFood.Models
         }
 
         public Food UpdateFood(Food food)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string UpdateStatus(string status, int id)
         {
             throw new NotImplementedException();
         }

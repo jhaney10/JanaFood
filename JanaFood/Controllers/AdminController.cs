@@ -30,6 +30,7 @@ namespace JanaFood.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRoleAsync(CreateRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -88,6 +89,7 @@ namespace JanaFood.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditRole(EditRoleViewModel model)
         {
             var role = await _roleManager.FindByIdAsync(model.RoleId);
@@ -146,6 +148,7 @@ namespace JanaFood.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUserInRole(List<UserViewModel> model, string roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId);

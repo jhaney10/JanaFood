@@ -145,3 +145,5 @@ C:\Users\User\source\repos\JanaFood\JanaFood\obj\Debug\netcoreapp3.1\JanaFood.dl
 C:\Users\User\source\repos\JanaFood\JanaFood\obj\Debug\netcoreapp3.1\JanaFood.pdb
 C:\Users\User\source\repos\JanaFood\JanaFood\bin\Debug\netcoreapp3.1\JanaFood.pdb
 C:\Users\User\source\repos\JanaFood\JanaFood\bin\Debug\netcoreapp3.1\JanaFood.Views.pdb
+C:\Users\User\source\repos\JanaFood\JanaFood\obj\Debug\netcoreapp3.1\Razor\Views\Manager\ListOrders.cshtml.g.cs
+C:\Users\User\source\repos\JanaFood\JanaFood\obj\Debug\netcoreapp3.1\Razor\Views\Manager\UpdateStatus.cshtml.g.cs

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JanaFood.Models;
+using JanaFood.Services;
 using JanaFood.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +16,14 @@ namespace JanaFood.Controllers
     {
         private RoleManager<IdentityRole> _roleManager;
         private UserManager<AppUser> _userManager;
+        private IFoodData _foodData;
 
-        public ManagerController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public ManagerController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager,
+            IFoodData foodData)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _foodData = foodData;
         }
         [HttpGet]
         public IActionResult ListUsers()
@@ -56,6 +60,7 @@ namespace JanaFood.Controllers
 
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
             var user = await _userManager.FindByIdAsync(model.UserId);
@@ -89,6 +94,7 @@ namespace JanaFood.Controllers
 
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -149,6 +155,7 @@ namespace JanaFood.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageRolesInUser(List<ManageRolesViewModel> model, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -179,6 +186,39 @@ namespace JanaFood.Controllers
                 return View(model);
             }
 
+        }
+        [HttpGet]
+        public IActionResult ListOrders()
+        {
+            var orderViewModel = new ManageOrderViewModel();
+            orderViewModel.Orders = _foodData.GetAllOrders();
+            
+            return View(orderViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult UpdateStatus(int id)
+        {
+            var order = _foodData.GetOrder(id);
+            var updateViewModel = new UpdateOrderStatusViewModel
+            {
+                Customer = order.Customer,
+                CustomerOrder = order.CustomerOrder,
+                DeliveryAddress = order.DeliveryAddress,
+                OrderId = order.OrderId,
+                OrderDate = order.OrderDate,
+                OrderStatus = order.OrderStatus
+            };
+            return View(updateViewModel);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateStatus(UpdateOrderStatusViewModel model,int id)
+        {
+            string status = model.OrderStatus;
+            var result = _foodData.UpdateStatus(status, id);
+            TempData["Message"] = result;
+            return RedirectToAction("ListOrders");
         }
 
     }

@@ -14,6 +14,9 @@ namespace JanaFood.Services
         Food UpdateFood(Food food);
         string DeleteFood(int id);
         Order OrderFood(Order order);
+        IEnumerable<Order> GetAllOrders();
+        Order GetOrder(int id);
+        string UpdateStatus(string status, int id);
 
     }
 }

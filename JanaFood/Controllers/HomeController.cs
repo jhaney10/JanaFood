@@ -83,7 +83,7 @@ namespace JanaFood.Controllers
 
                 var result = _foodData.SaveFood(newFood);
 
-                return RedirectToAction(nameof(Details), new {id = newFood.Id });
+                return RedirectToAction("Index");
             }
             else
             {
@@ -187,6 +187,7 @@ namespace JanaFood.Controllers
             }
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DeleteFood(int id)
         {
             if (ModelState.IsValid)

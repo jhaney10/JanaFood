@@ -1,4 +1,5 @@
 ﻿using JanaFood.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,12 @@ namespace JanaFood.Services
             return order;
         }
 
+        public IEnumerable<Order> GetAllOrders()
+        {
+            return _context.Orders.OrderBy(x => x.OrderDate).Include(f => f.Customer)
+                .Include(f => f.CustomerOrder).ToList();
+        }
+
         public Food SaveFood(Food food)
         {
             _context.Foods.Add(food);
@@ -71,6 +78,28 @@ namespace JanaFood.Services
             }
 
             return foodEntry;
+        }
+        public string UpdateStatus(string status, int id)
+        {
+            Order order = _context.Orders.FirstOrDefault(x => x.OrderId == id);
+            if (order != null)
+            {
+                order.OrderStatus = status;
+                _context.SaveChanges();
+                var result = "Status Update Successful";
+                return result;
+            }
+            else
+            {
+                var result = "Status Update Not Successful";
+                return result;
+            }
+        }
+
+        public Order GetOrder(int id)
+        {
+            return _context.Orders.Include(x => x.Customer).Include(x => x.CustomerOrder)
+                .FirstOrDefault(c => c.OrderId == id);
         }
     }
 }

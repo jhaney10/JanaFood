@@ -1,0 +1,38 @@
+﻿@model  UpdateOrderStatusViewModel
+
+<div class="card">
+    <div class="card-header">
+        @if (TempData["Message"] != null)
+        {
+        <p class="alert alert-success"> @TempData["Message"]</p>
+        }
+    </div>
+    <div class="card-body">
+         <div class="row">
+               <div class="col-md-6">
+                    <span><b>ORDER ID:</b> @Model.OrderId</span>
+                </div>
+                <div class="col-md-6">
+                    <span><b>ORDER DATE:</b> @Model.OrderDate</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <p><b>CUSTOMER:</b> @Model?.Customer?.UserName</p>
+                    <p><b>DELIVERY ADDRESS:</b> @Model?.DeliveryAddress</p>
+                    <p><b>ORDER AMOUNT:</b> @Model?.CustomerOrder?.Price</p>
+                    <p><b>ORDER:</b> @Model?.CustomerOrder?.Name</p>
+                    <p><b>DETAILS:</b> @Model?.CustomerOrder?.Description</p>
+                    <p><b>STATUS:</b>@Model.OrderStatus</p>
+                    <form method="post" asp-route-id="@Model.OrderId">
+                        <input asp-for="OrderStatus" class="form-control" /><br />
+                        <button type="submit" class="btn btn-primary">Update Status</button>
+                    </form>
+                    <a asp-action="ListOrders" asp-controller="Manager">Go Back To Orders List</a>
+
+                </div>
+            </div>
+            <hr />
+    </div>
+</div>
